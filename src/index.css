@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* Light theme (default) */
+    --color-background: 0 0% 100%;
+    --color-foreground: 0 0% 3.6%;
+    --color-card: 0 0% 100%;
+    --color-card-foreground: 0 0% 3.6%;
+    --color-primary: 0 0% 9%;
+    --color-primary-foreground: 0 0% 100%;
+    --color-secondary: 0 0% 96.1%;
+    --color-secondary-foreground: 0 0% 9%;
+    --color-muted: 0 0% 89.8%;
+    --color-muted-foreground: 0 0% 45.1%;
+    --color-accent: 0 84.2% 60.2%;
+    --color-accent-foreground: 0 0% 100%;
+    --color-destructive: 0 84.2% 60.2%;
+    --color-destructive-foreground: 0 0% 100%;
+    --color-border: 0 0% 89.8%;
+    --color-input: 0 0% 89.8%;
+    --color-ring: 0 0% 3.6%;
+  }
+
+  .dark {
+    --color-background: 0 0% 3.6%;
+    --color-foreground: 0 0% 98%;
+    --color-card: 0 0% 10%;
+    --color-card-foreground: 0 0% 98%;
+    --color-primary: 0 0% 98%;
+    --color-primary-foreground: 0 0% 9%;
+    --color-secondary: 0 0% 14.9%;
+    --color-secondary-foreground: 0 0% 98%;
+    --color-muted: 0 0% 23.1%;
+    --color-muted-foreground: 0 0% 63.9%;
+    --color-accent: 0 84.2% 60.2%;
+    --color-accent-foreground: 0 0% 9%;
+    --color-destructive: 0 84.2% 60.2%;
+    --color-destructive-foreground: 0 0% 9%;
+    --color-border: 0 0% 14.9%;
+    --color-input: 0 0% 14.9%;
+    --color-ring: 0 0% 83.1%;
+  }
+
+  /* Alternative color scheme - Blue */
+  .theme-blue:root {
+    --color-primary: 217 91% 60%;
+    --color-primary-foreground: 0 0% 100%;
+    --color-accent: 217 91% 60%;
+  }
+
+  .dark.theme-blue {
+    --color-primary: 217 91% 60%;
+    --color-primary-foreground: 0 0% 9%;
+    --color-accent: 217 91% 60%;
+  }
+
+  /* Alternative color scheme - Purple */
+  .theme-purple:root {
+    --color-primary: 262 80% 50%;
+    --color-primary-foreground: 0 0% 100%;
+    --color-accent: 262 80% 50%;
+  }
+
+  .dark.theme-purple {
+    --color-primary: 262 80% 50%;
+    --color-primary-foreground: 0 0% 9%;
+    --color-accent: 262 80% 50%;
+  }
+
+  /* Alternative color scheme - Green */
+  .theme-green:root {
+    --color-primary: 142 71% 45%;
+    --color-primary-foreground: 0 0% 100%;
+    --color-accent: 142 71% 45%;
+  }
+
+  .dark.theme-green {
+    --color-primary: 142 71% 45%;
+    --color-primary-foreground: 0 0% 9%;
+    --color-accent: 142 71% 45%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden clip whitespace-nowrap border-0;
+  }
+}
