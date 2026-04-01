@@ -1,11 +1,12 @@
 import { Menu, ShieldCheck, Globe, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { AIChatModal } from '@/components/AIChatModal'
+import { useChat } from '@/providers/ChatProvider'
 
 // @ts-expect-error - TS doesn't have an SVG module declaration file yet
 import rosetteInner from '@/media/rosette-inner.svg'
 
 export function Navbar() {
+  const { toggleChat } = useChat()
   return (
     <nav id="navbar" className="h-[50px] bg-[#084c8d] flex flex-none items-center justify-between px-4 sm:px-6 lg:px-8 z-50 overflow-hidden text-white relative">
       <div className="flex items-center gap-3 relative z-10 w-full h-full">
@@ -21,13 +22,15 @@ export function Navbar() {
       </div>
       
       <div className="flex items-center gap-2 relative z-10 ml-auto flex-shrink-0 text-white/90">
-        <AIChatModal 
-          trigger={
-            <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10" aria-label="AI Assistant">
-              <Sparkles className="h-5 w-5" />
-            </Button>
-          } 
-        />
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="text-white hover:text-white hover:bg-white/10 cursor-pointer" 
+          aria-label="AI Assistant"
+          onClick={toggleChat}
+        >
+          <Sparkles className="h-5 w-5" />
+        </Button>
         
         <div className="opacity-50 pointer-events-none">
           <Button variant="ghost" size="icon" className="text-white" aria-label="Security">

@@ -1,82 +1,91 @@
-import { useState, useCallback } from 'react'
-import { CreateMLCEngine, InitProgressReport, MLCEngine } from '@mlc-ai/web-llm'
+import { useState, useCallback, useRef } from 'react'
+import type { MLCEngineInterface, InitProgressReport, ChatCompletionMessageParam } from '@mlc-ai/web-llm'
 
-export type Message = {
-  role: 'user' | 'assistant' | 'system'
-  content: string
+// We'll lazy load the CreateMLCEngine to avoid heavy initial bundle size if possible,
+// but for simplicity in this prototype we'll import it.
+import { CreateMLCEngine } from '@mlc-ai/web-llm'
+
+const SELECTED_MODEL = 'Qwen2-0.5B-Instruct-q4f16_1-MLC'
+
+export interface WebLLMState {
+  isLoaded: boolean
+  isLoading: boolean
+  progress: number
+  status: string
+  error: string | null
 }
 
 export function useWebLLM() {
-  const [engine, setEngine] = useState<MLCEngine | null>(null)
-  const [isInitializing, setIsInitializing] = useState(false)
-  const [progress, setProgress] = useState<InitProgressReport | null>(null)
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'system', content: 'You are a helpful AI assistant integrated into the local TriMet transit app prototype.' }
-  ])
-  const [isGenerating, setIsGenerating] = useState(false)
+  const [state, setState] = useState<WebLLMState>({
+    isLoaded: false,
+    isLoading: false,
+    progress: 0,
+    status: '',
+    error: null
+  })
+  
+  const engineRef = useRef<MLCEngineInterface | null>(null)
 
-  // Use a smaller model by default so prototyping is fast
-  const modelId = "Llama-3.1-8B-Instruct-q4f32_1-MLC-1k"
+  const initialize = useCallback(async () => {
+    if (engineRef.current || state.isLoading) return
 
-  const init = useCallback(async () => {
-    if (engine || isInitializing) return
-    setIsInitializing(true)
+    setState(s => ({ ...s, isLoading: true, status: 'Initializing engine...' }))
     
     try {
-      const newEngine = await CreateMLCEngine(modelId, {
-        initProgressCallback: (progressReport) => {
-          setProgress(progressReport)
+      const engine = await CreateMLCEngine(SELECTED_MODEL, {
+        initProgressCallback: (report: InitProgressReport) => {
+          setState(s => ({
+            ...s,
+            progress: report.progress * 100,
+            status: report.text
+          }))
         }
       })
-      setEngine(newEngine)
-    } catch (error) {
-      console.error("WebLLM initialization failed", error)
-    } finally {
-      setIsInitializing(false)
+      
+      engineRef.current = engine
+      setState(s => ({ ...s, isLoaded: true, isLoading: false, status: 'Ready' }))
+    } catch (err: any) {
+      console.error('WebLLM init error:', err)
+      setState(s => ({ ...s, isLoading: false, error: err.message || 'Failed to load model' }))
     }
-  }, [engine, isInitializing])
+  }, [state.isLoading])
 
-  const chat = useCallback(async (text: string) => {
-    if (!engine) return
-
-    const userMessage: Message = { role: 'user', content: text }
-    const newMessages = [...messages, userMessage]
-    setMessages(newMessages)
-    setIsGenerating(true)
+  const chat = useCallback(async (
+    messages: ChatCompletionMessageParam[],
+    onUpdate: (content: string) => void
+  ) => {
+    if (!engineRef.current) return
 
     try {
-      const chunks = await engine.chat.completions.create({
-        messages: newMessages as any, // type map matches roughly
+      let fullContent = ''
+      const completion = await engineRef.current.chat.completions.create({
+        messages,
         stream: true
       })
 
-      let assistantResponse = ''
-      setMessages(prev => [...prev, { role: 'assistant', content: '' }])
-
-      for await (const chunk of chunks) {
-        const delta = chunk.choices[0]?.delta.content || ''
-        assistantResponse += delta
-        setMessages(prev => {
-          const m = [...prev]
-          m[m.length - 1].content = assistantResponse
-          return m
-        })
+      for await (const chunk of completion) {
+        const delta = chunk.choices[0]?.delta?.content || ''
+        if (delta) {
+          fullContent += delta
+          onUpdate(fullContent)
+        }
       }
-    } catch(err) {
-      console.error("Chat error", err)
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I encountered an error.' }])
-    } finally {
-      setIsGenerating(false)
+    } catch (err: any) {
+      console.error('WebLLM chat error:', err)
+      throw err
     }
-  }, [engine, messages])
+  }, [])
+
+  const reset = useCallback(async () => {
+    if (engineRef.current) {
+      await engineRef.current.resetChat()
+    }
+  }, [])
 
   return {
-    engine,
-    isInitializing,
-    progress,
-    init,
+    ...state,
+    initialize,
     chat,
-    messages,
-    isGenerating
+    reset
   }
 }
