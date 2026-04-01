@@ -11,27 +11,28 @@ export function Map() {
   const [zoom] = useState(11)
 
   useEffect(() => {
-    if (map.current || !mapContainer.current) return // initialize map only once
+    if (map.current || !mapContainer.current) return
 
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: 'https://demotiles.maplibre.org/style.json', // Placeholder style
+      style: 'https://tiles.trimet.org/styles/trimet/style.json',
       center: [lng, lat],
       zoom: zoom,
-      attributionControl: false // Usually custom attribution is placed
+      attributionControl: false
     })
 
-  }, [lng, lat, zoom])
+    // No need to remove map.current in dev mode, we just let it persist
+  }, [])
 
   return (
-    <div className="relative w-full h-full bg-slate-900">
-      <div ref={mapContainer} className="absolute inset-0" />
+    <div id="map-container" className="relative flex-1 w-full h-full bg-slate-900 min-h-[300px]">
+      <div ref={mapContainer} className="absolute inset-0" style={{ width: '100%', height: '100%', position: 'absolute' }} />
       {/* 
         Map controls positioning: 
         Desktop: Bottom Right
         Mobile: Top Left 
       */}
-      <div className="absolute top-0 left-0 md:top-auto md:left-auto md:bottom-2 md:right-2 z-10">
+      <div className="absolute bottom-2 right-2 z-10">
         <MapControls />
       </div>
     </div>

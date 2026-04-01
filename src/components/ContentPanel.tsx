@@ -1,58 +1,43 @@
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Train, Bus, MapPin } from 'lucide-react'
 
 export function ContentPanel() {
   return (
-    <div className="w-full h-full bg-background border-r border-border flex flex-col overflow-y-auto">
-      <div className="p-4 space-y-6">
-        <section>
-          <h2 className="text-xl font-bold mb-4 tracking-tight">Plan a Trip</h2>
-          <Card>
-            <CardContent className="p-4 space-y-4">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border border-border/50">
-                  <MapPin className="text-muted-foreground w-5 h-5 flex-shrink-0" />
-                  <div className="text-sm text-muted-foreground">Start location</div>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border border-border/50">
-                  <MapPin className="text-primary w-5 h-5 flex-shrink-0" />
-                  <div className="text-sm text-foreground">Destination</div>
-                </div>
+    <div id="content-panel" className="w-full h-full bg-background flex flex-col overflow-y-auto rounded-t-2xl">
+      {/* Top Header Box */}
+      <div className="h-[48px] bg-[#084c8d] w-full flex items-center justify-center px-4 rounded-t-2xl shrink-0">
+        <div className="h-4 w-32 bg-white/20 rounded-md"></div>
+      </div>
+
+      <div className="p-4 space-y-2 flex-1 bg-white">
+        {/* Row 1: First box centered, second box right-aligned */}
+        <div className="relative flex items-center justify-center w-full">
+          <div className="h-7 w-[100px] bg-gray-200 rounded-md"></div>
+          <div className="absolute right-0 h-7 w-[70px] bg-gray-200 rounded-md"></div>
+        </div>
+
+        {/* Row 2: Button min-width 250px */}
+        <div className="flex gap-4">
+          <div className="h-3 min-w-[250px] bg-gray-200 rounded-lg"></div>
+          <div className="h-3 min-w-[50px] bg-gray-200 rounded-lg"></div>
+        </div>
+
+        {/* Row 3: Gray box placeholders for next arrivals text - centered */}
+        <div className="flex flex-row items-center gap-2">
+          <div className="h-5 w-38 bg-gray-300 rounded-sm"></div>
+          <div className="h-3 w-28 bg-gray-200 rounded-sm"></div>
+        </div>
+
+        {/* Row 4: 4 Cards stacked, shorter with gaps */}
+        <div className="flex flex-col gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="min-h-[44px] bg-white border border-gray-200 rounded-xl shadow-sm p-3 flex items-center gap-4">
+              <div className="h-8 w-8 bg-gray-200 rounded-full shrink-0"></div>
+              <div className="space-y-1 flex-1">
+                <div className="h-2.5 w-3/4 bg-gray-200 rounded-sm"></div>
+                <div className="h-2.5 w-1/2 bg-gray-200 rounded-sm"></div>
               </div>
-              <Button className="w-full">Get Directions</Button>
-            </CardContent>
-          </Card>
-        </section>
-
-        <section>
-          <h2 className="text-lg font-bold mb-3">Nearby Services</h2>
-          <div className="grid gap-3">
-            <Card className="hover:bg-accent/50 cursor-pointer transition-colors">
-              <CardContent className="p-4 flex items-center gap-4">
-                <div className="bg-blue-500/10 p-2 rounded-full text-blue-500">
-                  <Train className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="font-semibold">MAX Light Rail</div>
-                  <div className="text-sm text-muted-foreground">Blue, Red, Green Lines</div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:bg-accent/50 cursor-pointer transition-colors">
-              <CardContent className="p-4 flex items-center gap-4">
-                <div className="bg-orange-500/10 p-2 rounded-full text-orange-500">
-                  <Bus className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="font-semibold">Frequent Service Buses</div>
-                  <div className="text-sm text-muted-foreground">Within 15 minutes</div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

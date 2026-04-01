@@ -1,31 +1,25 @@
-import { Plus, Minus, Navigation, Layers, Compass } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+
 
 export function MapControls() {
   return (
-    <div className="flex flex-col gap-2 p-4">
-      <div className="flex flex-col rounded-lg overflow-hidden shadow-lg border border-border bg-background">
-        <Button variant="ghost" className="rounded-none h-10 w-10 p-0 border-b border-border/50 bg-background/90 backdrop-blur" aria-label="Zoom In">
-          <Plus className="w-5 h-5" />
-        </Button>
-        <Button variant="ghost" className="rounded-none h-10 w-10 p-0 bg-background/90 backdrop-blur" aria-label="Zoom Out">
-          <Minus className="w-5 h-5" />
-        </Button>
+    <div id="map-controls" className="flex flex-col gap-3 p-4 items-center">
+      {/* Set 1: One button, round circle */}
+      <div className="flex bg-white hover:bg-gray-50 cursor-pointer h-[46px] w-[46px] rounded-full shadow-md border border-gray-200 items-center justify-center transition-colors">
+        <div className="h-5 w-5 bg-gray-300 rounded-full" />
       </div>
 
-      <div className="flex flex-col rounded-lg overflow-hidden shadow-lg border border-border bg-background">
-        <Button variant="ghost" className="rounded-none h-10 w-10 p-0 bg-background/90 backdrop-blur" aria-label="Current Location">
-          <Navigation className="w-5 h-5" />
-        </Button>
+      {/* Set 2: 4 grouped, rounded corners */}
+      <div className="flex flex-col rounded-[12px] overflow-hidden shadow-md border border-gray-200 bg-white w-[46px]">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className={`h-[46px] w-[46px] flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors ${i !== 4 ? 'border-b border-gray-200' : ''}`}>
+            <div className="h-5 w-5 bg-gray-300 rounded-full" />
+          </div>
+        ))}
       </div>
-      
-      <div className="flex flex-col rounded-lg overflow-hidden shadow-lg border border-border bg-background">
-        <Button variant="ghost" className="rounded-none h-10 w-10 p-0 border-b border-border/50 bg-background/90 backdrop-blur" aria-label="Toggle 2D/3D">
-          <Layers className="w-5 h-5" />
-        </Button>
-        <Button variant="ghost" className="rounded-none h-10 w-10 p-0 bg-background/90 backdrop-blur" aria-label="Reset Bearing">
-          <Compass className="w-5 h-5 pointer-events-none" />
-        </Button>
+
+      {/* Set 3: 1 button, rounded corners */}
+      <div className="flex bg-white hover:bg-gray-50 cursor-pointer h-[46px] w-[46px] rounded-[12px] shadow-md border border-gray-200 items-center justify-center transition-colors">
+        <div className="h-5 w-5 bg-gray-300 rounded-full" />
       </div>
     </div>
   )

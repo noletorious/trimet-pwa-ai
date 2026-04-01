@@ -5,8 +5,9 @@ import { Input } from '@/components/ui/input'
 import { Sparkles, Send, Loader2, Bot, User } from 'lucide-react'
 import { useWebLLM } from '@/hooks/useWebLLM'
 import ReactMarkdown from 'react-markdown'
+import { ReactNode } from 'react'
 
-export function AIChatModal() {
+export function AIChatModal({ trigger }: { trigger: ReactNode }) {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -35,14 +36,9 @@ export function AIChatModal() {
 
   return (
     <>
-      <Button
-        size="lg"
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-2xl hover:scale-105 transition-transform z-50 bg-primary"
-        onClick={handleOpen}
-        aria-label="Open AI Assistant"
-      >
-        <Sparkles className="h-6 w-6 text-primary-foreground" />
-      </Button>
+      <div onClick={handleOpen} aria-label="Open AI Assistant" className="inline-flex cursor-pointer transition-opacity hover:opacity-80">
+        {trigger}
+      </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[450px] h-[80vh] flex flex-col p-0 gap-0 overflow-hidden">
