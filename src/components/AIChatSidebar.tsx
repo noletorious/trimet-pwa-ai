@@ -81,7 +81,8 @@ export function AIChatSidebar() {
             <div className="text-center py-10 space-y-1">
               <p className="text-muted-foreground text-sm font-medium">Hello! I'm your TriMet assistant. How can I help you today?</p>
               <p className="text-xs text-muted-foreground/70 italic px-6 mb-4">
-                (I'm currently untrained, answers will vary. Questions? DigiComm.)
+                (I'm currently untrained, answers will vary<br />
+                Questions, contact the Digital Communications team)
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {['How do I buy a ticket?', 'Plan a trip to PDX', 'Accessibility features'].map(q => (

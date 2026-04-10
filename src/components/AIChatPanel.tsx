@@ -79,7 +79,8 @@ export function AIChatPanel() {
               <div className="space-y-2">
                 <p className="text-muted-foreground text-[16px] font-medium leading-tight">Hello! I'm your TriMet assistant. How can I help you today?</p>
                 <p className="text-xs text-muted-foreground/70 italic px-4">
-                  (I'm currently untrained, answers will vary. Questions? DigiComm.)
+                  (I'm currently untrained, answers will vary<br />
+                  Questions, contact the Digital Communications team)
                 </p>
               </div>
               <div className="flex flex-col gap-2">
